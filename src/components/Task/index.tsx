@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useRef } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import './task.css';
 
@@ -28,9 +28,15 @@ function Task({
   let classNames = 'active';
 
   const date = formatDistanceToNow(new Date(created), { includeSeconds: true, addSuffix: true });
+  const editDescriptionRef = useRef<HTMLInputElement>(null);
 
   if (completed) classNames = 'completed';
   if (editing) classNames = 'editing';
+  useEffect(() => {
+    if (editing) {
+      editDescriptionRef?.current?.focus();
+    }
+  }, [editing]);
   return (
     <li className={classNames}>
       <div className="view">
@@ -52,6 +58,7 @@ function Task({
       {editing && (
         <input
           type="text"
+          ref={editDescriptionRef}
           className="edit"
           defaultValue={description}
           onChange={(evt) => onEdited(id, evt.target.value)}
