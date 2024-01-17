@@ -3,24 +3,32 @@ module.exports = {
   env: { browser: true, es2020: true },
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     "airbnb", 
     "airbnb/hooks", 
     "plugin:react/jsx-runtime", 
-    "prettier"
+    "prettier",
+    'plugin:react/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended'
   ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true
     },
+    project: './tsconfig.json',
     ecmaVersion: "latest",
     sourceType: "module"
   },
   ignorePatterns: ['node_modules', 'dist', '.eslintrc.cjs', 'build'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'react', 'jsx-a11y', 'react-hooks', 'prettier', 'import'],
+  plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'react-hooks', 'prettier', 'import'],
   rules: {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
     "react/state-in-constructor": 0,
     "jsx-a11y/label-has-associated-control": 0,
     "indent": ["error", 2],
