@@ -9,17 +9,31 @@ interface Task {
   completed: boolean;
   editing: boolean;
 }
-// eslint-disable-block
+
+interface Filter {
+  name: string;
+  selected: boolean;
+}
+
 interface ToDoStore {
   todoTasks: Task[];
+  filters: Filter[];
   createTask: (description: string) => void;
+  editingTask: (id: string) => void;
   editTask: (id: string, description: string) => void;
   deleteTask: (id: string) => void;
   completedTask: (id: string) => void;
+  onClearCompleted: () => void;
+  onFilter: (name: string) => void;
 }
 
 const useToDoStore = create<ToDoStore>((set, get) => ({
   todoTasks: [],
+  filters: [
+    { name: 'All', selected: true },
+    { name: 'Active', selected: false },
+    { name: 'Completed', selected: false },
+  ],
   createTask: (description: string): void => {
     const { todoTasks } = get();
     const newTask = {
@@ -44,6 +58,16 @@ const useToDoStore = create<ToDoStore>((set, get) => ({
       })),
     });
   },
+  editingTask: (id: string): void => {
+    const { todoTasks } = get();
+
+    set({
+      todoTasks: todoTasks.map((task) => ({
+        ...task,
+        editing: task.id === id ? !task.editing : task.editing,
+      })),
+    });
+  },
   deleteTask: (id): void => {
     const { todoTasks } = get();
 
@@ -58,6 +82,22 @@ const useToDoStore = create<ToDoStore>((set, get) => ({
       todoTasks: todoTasks.map((task) => ({
         ...task,
         completed: task.id === id ? !task.completed : task.completed,
+      })),
+    });
+  },
+  onClearCompleted: (): void => {
+    const { todoTasks } = get();
+
+    set({
+      todoTasks: todoTasks.filter((task) => task.completed === false),
+    });
+  },
+  onFilter: (name): void => {
+    const { filters } = get();
+    set({
+      filters: filters.map((filter) => ({
+        ...filter,
+        selected: filter.name === name,
       })),
     });
   },

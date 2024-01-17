@@ -8,7 +8,8 @@ interface TaskProps {
   created: number;
   editing: boolean;
   completed: boolean;
-  // onEdited: (id: string, description: string) => void;
+  onEdited: (id: string, description: string) => void;
+  onEditing: (id: string) => void;
   onCompleted: (id: string) => void;
   onDeleted: (id: string) => void;
 }
@@ -19,7 +20,8 @@ function Task({
   created,
   editing,
   completed,
-  // onEdited,
+  onEdited,
+  onEditing,
   onDeleted,
   onCompleted,
 }: TaskProps): ReactElement<TaskProps> {
@@ -30,16 +32,36 @@ function Task({
   if (completed) classNames = 'completed';
   if (editing) classNames = 'editing';
   return (
-    <li className={classNames} key={id}>
+    <li className={classNames}>
       <div className="view">
         <input type="checkbox" className="toggle" onClick={() => onCompleted(id)} />
         <label>
           <span className="description">{description}</span>
           <span className="created">{date}</span>
         </label>
-        <button type="button" aria-label="Edit task" className="icon icon-edit" onClick={() => {}} />
+        <button
+          type="button"
+          aria-label="Edit task"
+          className="icon icon-edit"
+          onClick={() => {
+            onEditing(id);
+          }}
+        />
         <button type="button" aria-label="Delete task" className="icon icon-destroy" onClick={() => onDeleted(id)} />
       </div>
+      {editing && (
+        <input
+          type="text"
+          className="edit"
+          defaultValue={description}
+          onChange={(evt) => onEdited(id, evt.target.value)}
+          onKeyDown={(evt) => {
+            if (evt.key === 'Enter') {
+              onEditing(id);
+            }
+          }}
+        />
+      )}
     </li>
   );
 }
