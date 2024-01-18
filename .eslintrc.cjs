@@ -7,13 +7,13 @@ module.exports = {
     "airbnb", 
     "airbnb/hooks", 
     "plugin:react/jsx-runtime", 
-    "prettier",
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    "prettier",
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -31,7 +31,6 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": ["error"],
     "react/state-in-constructor": 0,
     "jsx-a11y/label-has-associated-control": 0,
-    // "indent": ["error", 2],
     "prettier/prettier": "error",
     "linebreak-style": [0, "unix"],
     "quotes": ["error", "single"],
