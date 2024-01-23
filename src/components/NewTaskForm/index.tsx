@@ -8,7 +8,7 @@ interface NewTaskFormProps {
 function NewTaskForm({ onAdd }: NewTaskFormProps): ReactElement<NewTaskFormProps> {
   const [inputValue, setInputValue] = useState('');
   return (
-    <div>
+    <form className="new-todo-form">
       <input
         type="text"
         className="new-todo"
@@ -24,7 +24,9 @@ function NewTaskForm({ onAdd }: NewTaskFormProps): ReactElement<NewTaskFormProps
           }
         }}
       />
-    </div>
+      <input className="new-todo-form__timer" placeholder="Min" />
+      <input className="new-todo-form__timer" placeholder="Sec" />
+    </form>
   );
 }
 

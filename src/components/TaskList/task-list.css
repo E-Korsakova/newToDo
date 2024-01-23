@@ -52,7 +52,10 @@
 }
 
 .todo-list li .icon-destroy {
-  right: 10px;
+  position: absolute;
+	top: 0;
+	bottom: -3px;
+	right: 10px;
 }
 
 .todo-list li .icon-destroy:after {
@@ -60,8 +63,11 @@
 }
 
 .todo-list li .icon-edit {
-  font-size: 19px;
-  right: 45px;
+  position: absolute;
+	top: 0;
+	bottom: -3px;
+	font-size: 19px;
+	right: 45px;
 }
 
 .todo-list li .icon-edit:after {
@@ -74,4 +80,38 @@
 
 .todo-list li.editing:last-child {
   margin-bottom: -1px;
+}
+
+.todo-list li .icon-pause,
+.todo-list li .icon-play {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.todo-list li .icon-play {
+	font-size: 15px;
+}
+
+.icon-pause:after {
+	content: '⏸';
+}
+
+.icon-play:after {
+	content: '▶';
+}
+
+.todo-list li.editing:last-child {
+	margin-bottom: -1px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.toggle-all,
+	.todo-list li .toggle {
+		background: none;
+	}
+
+	.todo-list li .toggle {
+		height: 40px;
+	}
 }

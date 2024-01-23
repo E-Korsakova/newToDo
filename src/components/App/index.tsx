@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
 
 import Header from '../Header/index.tsx';
-import NewTaskForm from '../NewTaskForm/index.tsx';
 import './app.css';
 import useToDoStore from '../../data/stores/useTodoStore.ts';
 import TaskList from '../TaskList/index.tsx';
@@ -11,8 +10,7 @@ function App(): ReactElement {
   const [todoTasks, createTask] = useToDoStore((state) => [state.todoTasks, state.createTask]);
   return (
     <section className="todoapp">
-      <Header />
-      <NewTaskForm
+      <Header
         onAdd={(description: string) => {
           if (description) {
             createTask(description);

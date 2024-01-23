@@ -42,8 +42,14 @@ function Task({
       <div className="view">
         <input type="checkbox" className="toggle" onClick={() => onCompleted(id)} />
         <label>
-          <span className="description">{description}</span>
-          <span className="created">{date}</span>
+          <span className="title">{description}</span>
+          <span className="description">
+            <button type="button" className="icon icon-play" />
+            <button type="button" className="icon icon-pause">
+              12:25
+            </button>
+          </span>
+          <span className="description">{date}</span>
         </label>
         <button
           type="button"
