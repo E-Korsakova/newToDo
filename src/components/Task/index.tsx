@@ -1,10 +1,12 @@
-import { ReactElement, useEffect, useRef } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import './task.css';
 
 interface TaskProps {
   id: string;
   description: string;
+  minutes: number;
+  seconds: number;
   created: number;
   editing: boolean;
   completed: boolean;
@@ -14,9 +16,35 @@ interface TaskProps {
   onDeleted: (id: string) => void;
 }
 
+function useNow(updateInterval: number, enabled: number | undefined, cb?: (time: number) => void) {
+  const cbRef = useRef(cb);
+  cbRef.current = cb;
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    setNow(Date.now());
+    cbRef.current?.(Date.now());
+
+    const interval = setInterval(() => {
+      setNow(Date.now());
+      cbRef.current?.(Date.now());
+    }, updateInterval);
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      clearInterval(interval);
+    };
+  }, [updateInterval, enabled]);
+  return now;
+}
+
 function Task({
   id,
   description,
+  minutes,
+  seconds,
   created,
   editing,
   completed,
@@ -29,7 +57,6 @@ function Task({
 
   const date = formatDistanceToNow(new Date(created), { includeSeconds: true, addSuffix: true });
   const editDescriptionRef = useRef<HTMLInputElement>(null);
-
   if (completed) classNames = 'completed';
   if (editing) classNames = 'editing';
   useEffect(() => {
@@ -37,6 +64,24 @@ function Task({
       editDescriptionRef?.current?.focus();
     }
   }, [editing]);
+
+  const allSeconds = minutes * 60 + +seconds;
+  const [startAt, setStartAt] = useState<number | undefined>();
+  const [initialTimer, setInitialTimer] = useState(0);
+
+  const now = useNow(1000, startAt);
+
+  const fromStart = now - (startAt && startAt < now ? startAt : now);
+
+  const timer = fromStart + initialTimer;
+
+  if (startAt && Math.floor(timer / 1000) > allSeconds) {
+    setStartAt(undefined);
+    setInitialTimer(0);
+  }
+
+  const timerDown = Math.max(0, allSeconds - Math.floor(timer / 1000));
+
   return (
     <li className={classNames}>
       <div className="view">
@@ -44,12 +89,28 @@ function Task({
         <label>
           <span className="title">{description}</span>
           <span className="description">
-            <button type="button" className="icon icon-play" />
-            <button type="button" className="icon icon-pause">
-              12:25
-            </button>
+            <div>
+              <button
+                type="button"
+                className="icon icon-play"
+                onClick={() => {
+                  if (!startAt) setStartAt(Date.now());
+                }}
+              />
+              <button
+                type="button"
+                className="icon icon-pause"
+                onClick={() => {
+                  if (startAt) {
+                    setInitialTimer(timer);
+                    setStartAt(undefined);
+                  }
+                }}
+              />
+            </div>
+            {`${String(Math.floor(timerDown / 60)).padStart(2, '0')}:${String(timerDown % 60).padStart(2, '0')}`}
           </span>
-          <span className="description">{date}</span>
+          <span className="created">{date}</span>
         </label>
         <button
           type="button"

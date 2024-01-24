@@ -74,14 +74,6 @@
   content: '✎';
 }
 
-.todo-list li .edit {
-  display: none;
-}
-
-.todo-list li.editing:last-child {
-  margin-bottom: -1px;
-}
-
 .todo-list li .icon-pause,
 .todo-list li .icon-play {
 	font-size: 18px;
@@ -101,8 +93,12 @@
 	content: '▶';
 }
 
+.todo-list li .edit {
+  display: none;
+}
+
 .todo-list li.editing:last-child {
-	margin-bottom: -1px;
+  margin-bottom: -1px;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {

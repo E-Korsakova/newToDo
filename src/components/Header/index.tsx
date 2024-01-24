@@ -4,7 +4,7 @@ import './header.css';
 import NewTaskForm from '../NewTaskForm/index.tsx';
 
 interface HeaderProps {
-  onAdd: (description: string) => void;
+  onAdd: (formData: { [key: string]: string }) => void;
 }
 
 function Header({ onAdd }: HeaderProps): ReactElement {

@@ -29,6 +29,8 @@ function TaskList(): ReactElement {
             key={task.id}
             id={task.id}
             description={task.description}
+            minutes={task.minutes}
+            seconds={task.seconds}
             created={task.created}
             editing={task.editing}
             completed={task.completed}

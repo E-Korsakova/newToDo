@@ -5,6 +5,8 @@ import generateId from '../helpers.ts';
 interface Task {
   id: string;
   description: string;
+  minutes: number;
+  seconds: number;
   created: number;
   completed: boolean;
   editing: boolean;
@@ -18,7 +20,7 @@ interface Filter {
 interface ToDoStore {
   todoTasks: Task[];
   filters: Filter[];
-  createTask: (description: string) => void;
+  createTask: (formData: { [key: string]: string }) => void;
   editingTask: (id: string) => void;
   editTask: (id: string, description: string) => void;
   deleteTask: (id: string) => void;
@@ -64,11 +66,13 @@ const useToDoStore = create<ToDoStore>(
       { name: 'Active', selected: false },
       { name: 'Completed', selected: false },
     ],
-    createTask: (description: string): void => {
+    createTask: (formData: { [key: string]: string }): void => {
       const { todoTasks } = get();
       const newTask = {
         id: generateId(),
-        description,
+        description: formData.description,
+        minutes: Number(formData.minutes),
+        seconds: Number(formData.seconds),
         created: Date.now(),
         completed: false,
         editing: false,

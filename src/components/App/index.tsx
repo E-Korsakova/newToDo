@@ -11,9 +11,9 @@ function App(): ReactElement {
   return (
     <section className="todoapp">
       <Header
-        onAdd={(description: string) => {
-          if (description) {
-            createTask(description);
+        onAdd={(formData: { [key: string]: string }) => {
+          if (formData.description) {
+            createTask(formData);
           }
         }}
       />
